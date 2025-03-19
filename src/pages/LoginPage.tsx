@@ -3,7 +3,9 @@ import { Alert, Button, Card, Form, Input, Typography } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginBg from "../assets/images/login-bg.png";
+import logo from "../assets/logo.png";
 import { useAuth } from "../context/AuthContext";
+
 const { Title } = Typography;
 
 const LoginPage = () => {
@@ -26,15 +28,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">
-      <div>
-        <Card className="max-w-md shadow-lg">
+    <div className="flex min-h-screen w-screen items-center justify-center">
+      <div className="flex w-1/2 items-center justify-center">
+        <Card className="w-[400px] max-w-md shadow-lg">
           <div className="mb-6 text-center">
-            <Title level={2} className="text-blue-600">
-              MiniLand
-            </Title>
+            <img src={logo} alt="MiniLand Logo" className="m-4 w-[160px]" />
             <Title level={4} className="mt-0">
-              Admin Panel Login
+              Login to continue
             </Title>
           </div>
 
@@ -89,7 +89,11 @@ const LoginPage = () => {
         </Card>
       </div>
       <div>
-        <img src={loginBg} alt="MiniLand Logo" className="w-1/2" />
+        <img
+          src={loginBg}
+          alt="MiniLand Logo"
+          className="h-screen w-[50vw] object-cover"
+        />
       </div>
     </div>
   );
