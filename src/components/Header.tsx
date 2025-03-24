@@ -1,55 +1,43 @@
-import { Button, Layout, Menu, Typography } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Layout, Menu, Typography } from "antd";
+import { Link, useLocation } from "react-router-dom";
 
 const { Header: AntHeader } = Layout;
 const { Title } = Typography;
 
 const Header = () => {
-  const { isAuthenticated, logout } = useAuth();
   const location = useLocation();
-  
+
   const menuItems = [
     {
-      key: '/orders',
+      key: "/orders",
       label: <Link to="/orders">Orders</Link>,
     },
     {
-      key: '/certificates',
+      key: "/certificates",
       label: <Link to="/certificates">Certificates</Link>,
     },
     {
-      key: '/profile',
+      key: "/profile",
       label: <Link to="/profile">Profile</Link>,
     },
   ];
 
   return (
-    <AntHeader className="flex items-center justify-between bg-white shadow-md px-6">
+    <AntHeader className="flex items-center justify-between bg-white px-6 shadow-md">
       <div className="flex items-center">
-        <Link to="/" className="flex items-center mr-6">
-          <Title level={3} className="m-0 text-blue-600">MiniLand</Title>
+        <Link to="/" className="mr-6 flex items-center">
+          <Title level={3} className="m-0 text-blue-600">
+            MiniLand
+          </Title>
         </Link>
-        
-        {isAuthenticated && (
-          <Menu
-            mode="horizontal"
-            selectedKeys={[location.pathname]}
-            items={menuItems}
-            className="border-b-0"
-          />
-        )}
+
+        <Menu
+          mode="horizontal"
+          selectedKeys={[location.pathname]}
+          items={menuItems}
+          className="border-b-0"
+        />
       </div>
-      
-      {isAuthenticated ? (
-        <Button type="link" onClick={logout}>
-          Logout
-        </Button>
-      ) : (
-        <Link to="/login">
-          <Button type="primary">Login</Button>
-        </Link>
-      )}
     </AntHeader>
   );
 };

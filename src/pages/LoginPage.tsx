@@ -1,7 +1,6 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Alert, Button, Card, Form, Input, Typography } from "antd";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import loginBg from "../assets/images/login-bg.png";
 import logo from "../assets/logo.png";
 import { useAuth } from "../context/AuthContext";
@@ -10,7 +9,6 @@ const { Title } = Typography;
 
 const LoginPage = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,7 +17,6 @@ const LoginPage = () => {
       setIsLoading(true);
       setError(null);
       await login(values.username, values.password);
-      navigate("/orders");
     } catch (error) {
       setError("Invalid username or password");
     } finally {

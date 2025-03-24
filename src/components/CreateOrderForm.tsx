@@ -80,10 +80,15 @@ const CreateOrderForm = ({
       const endTime = new Date(now.getTime() + duration * 60000);
 
       createOrderMutation.mutate({
-        ...values,
-        startTime: now,
-        endTime,
-        certificateCode: certificateVerified?.code,
+        promotion_name: certificateVerified?.code || "",
+        child_full_name: values.kidName,
+        child_age: values.kidAge,
+        parent_full_name: values.parentName,
+        parent_phone: values.parentPhone,
+        order_type: "order_type",
+        order_date: now.toISOString(),
+        order_time: now.toISOString(),
+        planId: selectedPlan.id,
       });
     },
   });

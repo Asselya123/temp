@@ -1,7 +1,6 @@
 export interface User {
-  id: string;
-  username: string;
-  role: 'admin';
+  user_id: number;
+  role: "admin" | "manager";
 }
 
 export interface Certificate {
@@ -20,19 +19,17 @@ export interface Plan {
   price: number;
 }
 
-export type OrderStatus = 'active' | 'completed' | 'expired';
+export type OrderStatus = "active" | "completed" | "expired";
 
 export interface Order {
-  id: string;
-  kidName: string;
-  kidAge: number;
-  parentName: string;
-  parentPhone: string;
-  startTime: Date;
-  endTime: Date;
+  id: number;
   status: OrderStatus;
-  planId: string;
-  plan: Plan;
-  certificateId?: string;
-  certificate?: Certificate;
+  promotion_name: string;
+  child_age: number;
+  child_full_name: string;
+  order_type: string;
+  parent_full_name: string;
+  parent_phone: string;
+  order_date: string;
+  order_time: string;
 }
