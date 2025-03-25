@@ -7,6 +7,7 @@ import {
   Order,
   OrderResponse,
   Promotion,
+  PromotionResponse,
   UseCertificateRequest,
 } from "./types";
 
@@ -76,6 +77,11 @@ export const createPromotion = async (promotion: Promotion) => {
     "/admin/promotion/create",
     promotion,
   );
+  return response.data;
+};
+
+export const getPromotions = async (): Promise<PromotionResponse[]> => {
+  const response = await axiosAuthorizedApi.get("/manager/promotions");
   return response.data;
 };
 

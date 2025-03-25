@@ -4,7 +4,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Button, Card, Tag, Typography } from "antd";
-import { Order } from "../types";
+import { OrderResponse } from "../types";
 import {
   formatTimeDifference,
   getTimeDifferenceInMinutes,
@@ -13,7 +13,7 @@ import {
 const { Text, Title } = Typography;
 
 interface OrderCardProps {
-  order: Order;
+  order: OrderResponse;
   onMarkComplete?: (id: string) => void;
 }
 

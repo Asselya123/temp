@@ -49,6 +49,10 @@ export interface Promotion {
   penalty: number;
 }
 
+export interface PromotionResponse extends Promotion {
+  id: string;
+}
+
 export interface LoginRequest {
   username: string;
   password: string;

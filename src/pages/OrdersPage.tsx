@@ -1,6 +1,7 @@
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Empty, Input, Spin, Tabs, Typography } from "antd";
 import { useState } from "react";
+import CreateOrderForm from "@/components/CreateOrderForm";
 import OrderCard from "@/components/OrderCard";
 import { useGetOrders } from "../query";
 
@@ -41,10 +42,6 @@ const OrdersPage = () => {
   return (
     <div>
       <div className="mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <Title level={2} className="m-0">
-          Kids Club Management
-        </Title>
-
         <div className="flex w-full gap-2 sm:w-auto">
           <Input
             placeholder="Search by kid's name"
@@ -62,16 +59,15 @@ const OrdersPage = () => {
             Search
           </Button>
         </div>
-      </div>
-
-      <div className="mb-4 flex justify-end">
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setCreateModalVisible(true)}
-        >
-          Create Order
-        </Button>
+        <div className="mb-4 flex justify-end">
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setCreateModalVisible(true)}
+          >
+            Create Order
+          </Button>
+        </div>
       </div>
 
       <Tabs
@@ -104,14 +100,10 @@ const OrdersPage = () => {
         </div>
       )}
 
-      {/* <CreateOrderForm
+      <CreateOrderForm
         visible={createModalVisible}
         onClose={() => setCreateModalVisible(false)}
-        onSuccess={() => {
-          queryClient.invalidateQueries({ queryKey: ["orders"] });
-          message.success("Order created successfully");
-        }}
-      /> */}
+      />
     </div>
   );
 };

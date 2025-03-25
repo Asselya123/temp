@@ -99,9 +99,9 @@ export const useCreateOrderForm = () => {
   const formik = useFormik<Order>({
     initialValues: {
       promotion_name: "",
-      order_type: "",
+      order_type: "default",
       child_full_name: "",
-      child_age: 0,
+      child_age: undefined as any,
       parent_full_name: "",
       parent_phone: "",
     },

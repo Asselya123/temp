@@ -1,18 +1,17 @@
 import { Button, Card, Form, Input, InputNumber, Modal, Select } from "antd";
 import Title from "antd/es/typography/Title";
+import { useCreateOrderForm } from "@/forms";
+import { useGetPromotions } from "@/query";
 import logo from "../assets/logo.png";
 
 interface CreateOrderFormProps {
   visible: boolean;
   onClose: () => void;
-  onSuccess: () => void;
 }
 
-const CreateOrderForm = ({
-  visible,
-  onClose,
-  onSuccess,
-}: CreateOrderFormProps) => {
+const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
+  const { formik } = useCreateOrderForm();
+  const { data: promotions } = useGetPromotions();
   return (
     <Modal
       title="Create New Order"
@@ -30,13 +29,17 @@ const CreateOrderForm = ({
           <Form.Item
             label="Kid's Full Name"
             validateStatus={
-              formik.touched.kidName && formik.errors.kidName ? "error" : ""
+              formik.touched.child_full_name && formik.errors.child_full_name
+                ? "error"
+                : ""
             }
-            help={formik.touched.kidName && formik.errors.kidName}
+            help={
+              formik.touched.child_full_name && formik.errors.child_full_name
+            }
           >
             <Input
-              name="kidName"
-              value={formik.values.kidName}
+              name="child_full_name"
+              value={formik.values.child_full_name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter full name"
@@ -46,14 +49,14 @@ const CreateOrderForm = ({
           <Form.Item
             label="Kid's Age"
             validateStatus={
-              formik.touched.kidAge && formik.errors.kidAge ? "error" : ""
+              formik.touched.child_age && formik.errors.child_age ? "error" : ""
             }
-            help={formik.touched.kidAge && formik.errors.kidAge}
+            help={formik.touched.child_age && formik.errors.child_age}
           >
             <InputNumber
-              name="kidAge"
-              value={formik.values.kidAge}
-              onChange={(value) => formik.setFieldValue("kidAge", value)}
+              name="child_age"
+              value={formik.values.child_age}
+              onChange={(value) => formik.setFieldValue("child_age", value)}
               onBlur={formik.handleBlur}
               min={1}
               max={12}
@@ -65,15 +68,17 @@ const CreateOrderForm = ({
           <Form.Item
             label="Parent's Full Name"
             validateStatus={
-              formik.touched.parentName && formik.errors.parentName
+              formik.touched.parent_full_name && formik.errors.parent_full_name
                 ? "error"
                 : ""
             }
-            help={formik.touched.parentName && formik.errors.parentName}
+            help={
+              formik.touched.parent_full_name && formik.errors.parent_full_name
+            }
           >
             <Input
-              name="parentName"
-              value={formik.values.parentName}
+              name="parent_full_name"
+              value={formik.values.parent_full_name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter full name"
@@ -83,15 +88,15 @@ const CreateOrderForm = ({
           <Form.Item
             label="Parent's Phone Number"
             validateStatus={
-              formik.touched.parentPhone && formik.errors.parentPhone
+              formik.touched.parent_phone && formik.errors.parent_phone
                 ? "error"
                 : ""
             }
-            help={formik.touched.parentPhone && formik.errors.parentPhone}
+            help={formik.touched.parent_phone && formik.errors.parent_phone}
           >
             <Input
-              name="parentPhone"
-              value={formik.values.parentPhone}
+              name="parent_phone"
+              value={formik.values.parent_phone}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               placeholder="Enter phone number"
@@ -102,18 +107,20 @@ const CreateOrderForm = ({
         <Form.Item
           label="Select Plan"
           validateStatus={
-            formik.touched.planId && formik.errors.planId ? "error" : ""
+            formik.touched.promotion_name && formik.errors.promotion_name
+              ? "error"
+              : ""
           }
-          help={formik.touched.planId && formik.errors.planId}
+          help={formik.touched.promotion_name && formik.errors.promotion_name}
         >
           <Select
-            value={formik.values.planId}
-            onChange={(value) => formik.setFieldValue("planId", value)}
+            value={formik.values.promotion_name}
+            onChange={(value) => formik.setFieldValue("promotion_name", value)}
             onBlur={formik.handleBlur}
             placeholder="Select a plan"
-            options={plans.map((plan) => ({
-              value: plan.id,
-              label: `${plan.name} - $${plan.price}`,
+            options={promotions?.map((promotion) => ({
+              value: promotion.name,
+              label: `${promotion.name} - $${promotion.cost}`,
             }))}
           />
         </Form.Item>
@@ -122,8 +129,9 @@ const CreateOrderForm = ({
           <Button onClick={onClose}>Cancel</Button>
           <Button
             type="primary"
-            htmlType="submit"
-            loading={createOrderMutation.isPending}
+            disabled={formik.isSubmitting || !formik.isValid}
+            onClick={() => formik.submitForm().then(() => onClose())}
+            loading={formik.isSubmitting}
           >
             Create Order
           </Button>

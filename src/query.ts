@@ -11,6 +11,7 @@ import {
   finishOrder,
   getCertificates,
   getOrders,
+  getPromotions,
   login,
   useCertificate,
 } from "./axios";
@@ -22,6 +23,7 @@ import {
   Order,
   OrderResponse,
   Promotion,
+  PromotionResponse,
   UseCertificateRequest,
 } from "./types";
 
@@ -134,6 +136,16 @@ export const useUseCertificateMutation = () => {
     },
     onError() {
       message.error("Failed to use certificate");
+    },
+  });
+};
+
+export const useGetPromotions = () => {
+  return useQuery<PromotionResponse[]>({
+    queryKey: ["promotions"],
+    queryFn: async () => {
+      const data = await getPromotions();
+      return data;
     },
   });
 };
