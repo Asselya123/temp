@@ -8,6 +8,7 @@ import MainLayout from "./layouts/MainLayout";
 // Pages
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import OrdersPage from "./pages/OrdersPage";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -33,16 +34,14 @@ function App() {
             <AuthProvider>
               <Routes>
                 <Route path="/sign-in" element={<LoginPage />} />
-
                 <Route element={<MainLayout />}>
                   <Route path="/manager">
-                    {/* <Route index element={<OrdersPage />} />
-
+                    <Route index element={<OrdersPage />} />
+                    {/*
                     <Route path="orders" element={<OrdersPage />} />
                     <Route path="certificates" element={<CertificatesPage />} />
                     <Route path="profile" element={<ProfilePage />} /> */}
                   </Route>
-
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
               </Routes>
