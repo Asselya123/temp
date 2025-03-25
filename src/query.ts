@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { App } from "antd";
 import { AxiosError } from "axios";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import {
   createCertificate,
   createManager,
@@ -47,11 +49,19 @@ export const useGetCertificates = () => {
 // Mutation hooks
 export const useLoginMutation = () => {
   const { message } = App.useApp();
+  const navigate = useNavigate();
   return useMutation<LoginResponse, AxiosError, LoginRequest>({
     async mutationFn(credentials) {
       return await login(credentials);
     },
-    onSuccess() {
+    onSuccess(data) {
+      localStorage.setItem("token", data.token);
+      const role = jwtDecode<{ role: string }>(data.token).role;
+      if (role === "manager") {
+        navigate("/manager");
+      } else {
+        navigate("/admin");
+      }
       message.success("Login successful!");
     },
     onError() {

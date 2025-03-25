@@ -29,7 +29,7 @@ axiosAuthorizedApi.interceptors.request.use((config) => {
 export const login = async (
   credentials: LoginRequest,
 ): Promise<LoginResponse> => {
-  const response = await axiosApi.post("/auth/login", credentials);
+  const response = await axiosApi.post("/auth/sign_in", credentials);
   return response.data;
 };
 

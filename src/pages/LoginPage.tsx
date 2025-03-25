@@ -1,27 +1,16 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Alert, Button, Card, Form, Input, Typography } from "antd";
-import { useState } from "react";
+import { Button, Card, Form, Input, Typography } from "antd";
 import loginBg from "../assets/images/login-bg.png";
 import logo from "../assets/logo.png";
-import { useAuth } from "../context/AuthContext";
+import { useLoginForm } from "../forms";
 
 const { Title } = Typography;
 
 const LoginPage = () => {
-  const { login } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { formik } = useLoginForm();
 
-  const onFinish = async (values: { username: string; password: string }) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      await login(values.username, values.password);
-    } catch (error) {
-      setError("Invalid username or password");
-    } finally {
-      setIsLoading(false);
-    }
+  const onFinish = async () => {
+    await formik.submitForm();
   };
 
   return (
@@ -35,13 +24,12 @@ const LoginPage = () => {
             </Title>
           </div>
 
-          {error && (
-            <Alert message={error} type="error" showIcon className="mb-4" />
-          )}
-
           <Form
             name="login"
-            initialValues={{ remember: true }}
+            initialValues={{
+              username: formik.values.username,
+              password: formik.values.password,
+            }}
             onFinish={onFinish}
             layout="vertical"
           >
@@ -55,6 +43,9 @@ const LoginPage = () => {
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Username"
                 size="large"
+                onChange={(e) =>
+                  formik.setFieldValue("username", e.target.value)
+                }
               />
             </Form.Item>
 
@@ -68,6 +59,9 @@ const LoginPage = () => {
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 placeholder="Password"
                 size="large"
+                onChange={(e) =>
+                  formik.setFieldValue("password", e.target.value)
+                }
               />
             </Form.Item>
 
@@ -77,7 +71,7 @@ const LoginPage = () => {
                 htmlType="submit"
                 className="w-full"
                 size="large"
-                loading={isLoading}
+                loading={formik.isSubmitting}
               >
                 Log in
               </Button>
