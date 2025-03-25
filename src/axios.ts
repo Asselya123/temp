@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   Certificate,
+  CertificateResponse,
   LoginRequest,
   LoginResponse,
   Manager,
@@ -67,7 +68,7 @@ export const useCertificate = async (data: UseCertificateRequest) => {
   return response.data;
 };
 
-export const getCertificates = async (): Promise<Certificate[]> => {
+export const getCertificates = async (): Promise<CertificateResponse[]> => {
   const response = await axiosAuthorizedApi.get("/manager/certificates");
   return response.data;
 };

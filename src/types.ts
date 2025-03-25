@@ -30,6 +30,10 @@ export interface Certificate {
   promotion_name: string;
 }
 
+export interface CertificateResponse extends Certificate {
+  id: string;
+}
+
 export interface UseCertificateRequest {
   certificate_id: number;
   attrs: {

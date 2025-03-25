@@ -17,6 +17,7 @@ import {
 } from "./axios";
 import {
   Certificate,
+  CertificateResponse,
   LoginRequest,
   LoginResponse,
   Manager,
@@ -39,7 +40,7 @@ export const useGetOrders = () => {
 };
 
 export const useGetCertificates = () => {
-  return useQuery<Certificate[]>({
+  return useQuery<CertificateResponse[]>({
     queryKey: ["certificates"],
     queryFn: async () => {
       const data = await getCertificates();

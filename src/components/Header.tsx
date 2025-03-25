@@ -1,8 +1,8 @@
-import { Layout, Menu, Typography } from "antd";
+import { Layout, Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
+import logoIcon from "../assets/logo.png";
 
 const { Header: AntHeader } = Layout;
-const { Title } = Typography;
 
 const Header = () => {
   const location = useLocation();
@@ -26,9 +26,7 @@ const Header = () => {
     <AntHeader className="flex items-center justify-between bg-white px-6 shadow-md">
       <div className="flex items-center">
         <Link to="/" className="mr-6 flex items-center">
-          <Title level={3} className="m-0 text-blue-600">
-            MiniLand
-          </Title>
+          <img src={logoIcon} alt="logo" className="h-10" />
         </Link>
 
         <Menu

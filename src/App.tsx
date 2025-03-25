@@ -6,6 +6,7 @@ import { AuthProvider } from "./context/AuthContext";
 // Layouts
 import MainLayout from "./layouts/MainLayout";
 // Pages
+import CertificatesPage from "./pages/CertificatesPage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import OrdersPage from "./pages/OrdersPage";
@@ -37,9 +38,10 @@ function App() {
                 <Route element={<MainLayout />}>
                   <Route path="/manager">
                     <Route index element={<OrdersPage />} />
+                    <Route path="certificates" element={<CertificatesPage />} />
                     {/*
                     <Route path="orders" element={<OrdersPage />} />
-                    <Route path="certificates" element={<CertificatesPage />} />
+                    
                     <Route path="profile" element={<ProfilePage />} /> */}
                   </Route>
                   <Route path="*" element={<NotFoundPage />} />
