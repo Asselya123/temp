@@ -1,7 +1,7 @@
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Empty, Input, Spin, Tabs } from "antd";
 import { useState } from "react";
-import CertificateCard from "@/components/CaertificateCard";
+import CertificateCard from "@/components/CertificateCard";
 import CreateCertificateForm from "@/components/CreateCertificateForm";
 import { useGetCertificates } from "../query";
 
@@ -33,7 +33,7 @@ const CertificatesPage = () => {
   const displayCertificates = certificates; //searchMutation.data || orders;
 
   // Handle mark as completed
-  const handleUse = (id: string) => {
+  const handleUse = () => {
     // updateOrderStatusMutation.mutate(id);
   };
 

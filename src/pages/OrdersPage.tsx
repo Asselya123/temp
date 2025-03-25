@@ -1,11 +1,9 @@
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Empty, Input, Spin, Tabs, Typography } from "antd";
+import { Button, Empty, Input, Spin, Tabs } from "antd";
 import { useState } from "react";
 import CreateOrderForm from "@/components/CreateOrderForm";
 import OrderCard from "@/components/OrderCard";
 import { useGetOrders } from "../query";
-
-const { Title } = Typography;
 
 const OrdersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,7 +33,7 @@ const OrdersPage = () => {
   const displayOrders = orders; //searchMutation.data || orders;
 
   // Handle mark as completed
-  const handleMarkComplete = (id: string) => {
+  const handleMarkComplete = () => {
     // updateOrderStatusMutation.mutate(id);
   };
 
