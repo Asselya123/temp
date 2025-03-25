@@ -10,6 +10,7 @@ import {
   createPromotion,
   finishOrder,
   getCertificates,
+  getManagers,
   getOrders,
   getPromotions,
   login,
@@ -21,6 +22,7 @@ import {
   LoginRequest,
   LoginResponse,
   Manager,
+  ManagerResponse,
   Order,
   OrderResponse,
   Promotion,
@@ -164,6 +166,16 @@ export const useCreatePromotionMutation = () => {
     },
     onError() {
       message.error("Failed to create promotion");
+    },
+  });
+};
+
+export const useGetManagers = () => {
+  return useQuery<ManagerResponse[]>({
+    queryKey: ["managers"],
+    queryFn: async () => {
+      const data = await getManagers();
+      return data;
     },
   });
 };

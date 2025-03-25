@@ -6,6 +6,10 @@ export interface Manager {
   photo_url: string;
 }
 
+export interface ManagerResponse extends Manager {
+  id: string;
+}
+
 export interface Order {
   promotion_name: string;
   order_type: string;

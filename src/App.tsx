@@ -8,6 +8,7 @@ import MainLayout from "./layouts/MainLayout";
 // Pages
 import CertificatesPage from "./pages/CertificatesPage";
 import LoginPage from "./pages/LoginPage";
+import ManagersPage from "./pages/ManagersPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import OrdersPage from "./pages/OrdersPage";
 
@@ -43,6 +44,12 @@ function App() {
                     <Route path="orders" element={<OrdersPage />} />
                     
                     <Route path="profile" element={<ProfilePage />} /> */}
+                  </Route>
+                  <Route path="*" element={<NotFoundPage />} />
+                </Route>
+                <Route element={<MainLayout />}>
+                  <Route path="/admin">
+                    <Route index element={<ManagersPage />} />
                   </Route>
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>

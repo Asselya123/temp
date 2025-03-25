@@ -5,6 +5,7 @@ import {
   LoginRequest,
   LoginResponse,
   Manager,
+  ManagerResponse,
   Order,
   OrderResponse,
   Promotion,
@@ -83,6 +84,11 @@ export const createPromotion = async (promotion: Promotion) => {
 
 export const getPromotions = async (): Promise<PromotionResponse[]> => {
   const response = await axiosAuthorizedApi.get("/manager/promotions");
+  return response.data;
+};
+
+export const getManagers = async (): Promise<ManagerResponse[]> => {
+  const response = await axiosAuthorizedApi.get("/admin/managers");
   return response.data;
 };
 

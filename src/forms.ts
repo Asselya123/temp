@@ -12,6 +12,7 @@ import {
   Certificate,
   LoginRequest,
   Manager,
+  ManagerResponse,
   Order,
   Promotion,
   UseCertificateRequest,
@@ -198,8 +199,25 @@ export const useCreateManagerForm = () => {
       password: "",
       phone: "",
       full_name: "",
-      photo_url: "",
+      photo_url: "some",
     },
+    validationSchema: managerSchema,
+    validateOnChange: true,
+    onSubmit: handleSubmit,
+  });
+
+  async function handleSubmit(values: Manager) {
+    await mutation.mutateAsync(values);
+  }
+
+  return { formik, mutation };
+};
+
+export const useUpdateManagerForm = (initialValues: ManagerResponse) => {
+  const mutation = useCreateManagerMutation();
+
+  const formik = useFormik<ManagerResponse>({
+    initialValues,
     validationSchema: managerSchema,
     validateOnChange: true,
     onSubmit: handleSubmit,
