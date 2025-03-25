@@ -14,7 +14,7 @@ const Header = () => {
     },
     {
       key: "/certificates",
-      label: <Link to="/certificates">Certificates</Link>,
+      label: <Link to="/manager/certificates">Certificates</Link>,
     },
     {
       key: "/profile",

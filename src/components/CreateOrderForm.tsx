@@ -1,12 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Card, Form, Input, InputNumber, Modal, Select } from "antd";
 import Title from "antd/es/typography/Title";
-import { useFormik } from "formik";
-import { useState } from "react";
-import * as Yup from "yup";
 import logo from "../assets/logo.png";
-import { orderService } from "../services/orderService";
-import { Certificate } from "../types";
 
 interface CreateOrderFormProps {
   visible: boolean;
@@ -19,87 +13,6 @@ const CreateOrderForm = ({
   onClose,
   onSuccess,
 }: CreateOrderFormProps) => {
-  const [certificateCode, setCertificateCode] = useState("");
-  const [certificateVerified, setCertificateVerified] =
-    useState<Certificate | null>(null);
-
-  // Fetch available plans
-  const { data: plans = [] } = useQuery({
-    queryKey: ["plans"],
-    queryFn: orderService.getPlans,
-  });
-
-  // Verify certificate mutation
-  const verifyCertificateMutation = useMutation({
-    mutationFn: orderService.verifyCertificate,
-    onSuccess: (data) => {
-      setCertificateVerified(data);
-    },
-  });
-
-  // Create order mutation
-  const createOrderMutation = useMutation({
-    mutationFn: orderService.createOrder,
-    onSuccess: () => {
-      onSuccess();
-      onClose();
-      formik.resetForm();
-      setCertificateCode("");
-      setCertificateVerified(null);
-    },
-  });
-
-  // Formik setup
-  const formik = useFormik({
-    initialValues: {
-      kidName: "",
-      kidAge: 3,
-      parentName: "",
-      parentPhone: "",
-      planId: "",
-    },
-    validationSchema: Yup.object({
-      kidName: Yup.string().required("Required"),
-      kidAge: Yup.number().min(1).max(12).required("Required"),
-      parentName: Yup.string().required("Required"),
-      parentPhone: Yup.string().required("Required"),
-      planId: Yup.string().required("Required"),
-    }),
-    onSubmit: (values) => {
-      const now = new Date();
-      const selectedPlan = plans.find((p) => p.id === values.planId);
-      if (!selectedPlan) return;
-
-      let duration = selectedPlan.duration;
-
-      // If certificate is verified and selected, use its duration
-      if (certificateVerified) {
-        duration = certificateVerified.duration;
-      }
-
-      const endTime = new Date(now.getTime() + duration * 60000);
-
-      createOrderMutation.mutate({
-        promotion_name: certificateVerified?.code || "",
-        child_full_name: values.kidName,
-        child_age: values.kidAge,
-        parent_full_name: values.parentName,
-        parent_phone: values.parentPhone,
-        order_type: "order_type",
-        order_date: now.toISOString(),
-        order_time: now.toISOString(),
-        planId: selectedPlan.id,
-      });
-    },
-  });
-
-  // Handle certificate verification
-  const handleVerifyCertificate = () => {
-    if (certificateCode) {
-      verifyCertificateMutation.mutate(certificateCode);
-    }
-  };
-
   return (
     <Modal
       title="Create New Order"

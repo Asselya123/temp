@@ -8,7 +8,6 @@ import {
 } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { axiosApi } from "@/axios";
-import { Loading } from "@/components/Loading";
 import { User } from "@/types";
 
 interface AuthContextType {
@@ -86,6 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    return;
     const token = localStorage.getItem("token");
     let decodedUser: User | null = null;
 
@@ -103,10 +103,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, 500);
     return () => clearTimeout(timeout);
   }, [location.pathname]);
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
