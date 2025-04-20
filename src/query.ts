@@ -8,6 +8,7 @@ import {
     createOrder,
     createPromotion,
     finishOrder,
+    getAdminCertificates,
     getCertificates,
     getManagers,
     getOrders,
@@ -45,6 +46,16 @@ export const useGetCertificates = () => {
         queryKey: ["certificates"],
         queryFn: async () => {
             const data = await getCertificates();
+            return data;
+        },
+    });
+};
+
+export const useGetAdminCertificates = () => {
+    return useQuery<CertificateResponseItem[]>({
+        queryKey: ["adminCertificates"],
+        queryFn: async () => {
+            const data = await getAdminCertificates();
             return data;
         },
     });

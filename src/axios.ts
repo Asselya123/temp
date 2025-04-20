@@ -68,6 +68,11 @@ export const getCertificates = async (): Promise<CertificateResponseItem[]> => {
     return response.data.data;
 };
 
+export const getAdminCertificates = async (): Promise<CertificateResponseItem[]> => {
+    const response = await axiosAuthorizedApi.get<CertificateResponse>("/admin/certificates");
+    return response.data.data;
+};
+
 export const createPromotion = async (promotion: Promotion) => {
     const response = await axiosAuthorizedApi.post("/admin/promotion/create", promotion);
     return response.data;
