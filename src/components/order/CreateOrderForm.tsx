@@ -1,4 +1,5 @@
 import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
+import { MaskedInput } from "antd-mask-input";
 import Title from "antd/es/typography/Title";
 import logo from "@/assets/logo.png";
 import { useCreateOrderForm } from "@/forms";
@@ -38,7 +39,8 @@ const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
                     validateStatus={formik.touched.parent_phone && formik.errors.parent_phone ? "error" : ""}
                     help={formik.touched.parent_phone && formik.errors.parent_phone}
                 >
-                    <Input
+                    <MaskedInput
+                        mask="+7 (000) 000-00-00"
                         name="parent_phone"
                         value={formik.values.parent_phone}
                         onChange={formik.handleChange}
@@ -71,8 +73,7 @@ const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
                         value={formik.values.child_age}
                         onChange={(value) => formik.setFieldValue("child_age", value)}
                         onBlur={formik.handleBlur}
-                        min={1}
-                        max={12}
+                        type="number"
                         style={{ width: "100%" }}
                     />
                 </Form.Item>
@@ -89,7 +90,7 @@ const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
                         placeholder="Select a plan"
                         options={promotions?.map((promotion) => ({
                             value: promotion.name,
-                            label: `${promotion.name} - $${promotion.cost}`,
+                            label: `${promotion.name} - ${promotion.cost} ₸`,
                         }))}
                     />
                 </Form.Item>

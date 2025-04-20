@@ -10,6 +10,7 @@ import {
     deleteCertificate,
     deletePromotion,
     finishOrder,
+    fireManager,
     getAdminCertificates,
     getAdminOrders,
     getAdminPromotions,
@@ -19,6 +20,7 @@ import {
     getOrders,
     getPromotions,
     getStatistics,
+    hireManager,
     login,
     useCertificate,
 } from "./axios";
@@ -288,6 +290,40 @@ export const useDeleteCertificateMutation = () => {
         },
         onError() {
             message.error("Failed to delete certificate");
+        },
+    });
+};
+
+export const useHireManagerMutation = () => {
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, string>({
+        async mutationFn(managerId) {
+            return await hireManager(managerId);
+        },
+        onSuccess() {
+            message.success("Manager hired successfully!");
+            queryClient.invalidateQueries({ queryKey: ["managers"] });
+        },
+        onError() {
+            message.error("Failed to hire manager");
+        },
+    });
+};
+
+export const useFireManagerMutation = () => {
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, string>({
+        async mutationFn(managerId) {
+            return await fireManager(managerId);
+        },
+        onSuccess() {
+            message.success("Manager fired successfully!");
+            queryClient.invalidateQueries({ queryKey: ["managers"] });
+        },
+        onError() {
+            message.error("Failed to fire manager");
         },
     });
 };

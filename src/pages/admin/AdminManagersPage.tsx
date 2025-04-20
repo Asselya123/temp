@@ -20,9 +20,11 @@ export const AdminManagersPage = () => {
                 <Empty description="No managers found" />
             ) : (
                 <div className="flex flex-col gap-4">
-                    {managers.map((manager) => (
-                        <ManagerCard key={manager.id} manager={manager} />
-                    ))}
+                    {managers
+                        .sort((a, b) => Number(a.id) - Number(b.id))
+                        .map((manager) => (
+                            <ManagerCard key={manager.id} manager={manager} />
+                        ))}
                 </div>
             )}
 

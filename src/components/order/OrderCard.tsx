@@ -11,7 +11,7 @@ interface OrderCardProps {
 }
 
 const OrderCard = ({ order, onMarkComplete }: OrderCardProps) => {
-    const timeLeft = getTimeDifferenceInMinutes(new Date(order.order_date + " " + order.order_time));
+    const timeLeft = getTimeDifferenceInMinutes(new Date(order.end_date));
 
     let borderColorClass = "border-gray-200";
 
@@ -60,7 +60,9 @@ const OrderCard = ({ order, onMarkComplete }: OrderCardProps) => {
                 <div className="mt-2 flex flex-wrap gap-2">
                     <Tag color="blue">Age: {order.child_age}</Tag>
                     <Tag color="purple">Plan: {order.promotion_name}</Tag>
-                    <Tag color="cyan">Start: {order.order_date}</Tag>
+                    <Tag color="cyan">
+                        Start: {order.order_date} {order.order_time}
+                    </Tag>
                 </div>
             </div>
         </Card>

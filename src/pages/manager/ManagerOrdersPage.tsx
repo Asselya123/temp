@@ -12,20 +12,12 @@ export const ManagerOrdersPage = () => {
 
     const { data: orders = [], isPending } = useGetOrders();
 
-    const handleSearch = () => {
-        if (searchTerm.trim()) {
-        }
-    };
-
     const handleTabChange = (key: string) => {
         setActiveTab(key);
-
         setSearchTerm("");
     };
 
-    const displayOrders = orders;
-
-    const handleMarkComplete = () => {};
+    const displayOrders = orders.filter((order) => order.child_full_name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
         <div>
@@ -35,13 +27,10 @@ export const ManagerOrdersPage = () => {
                         placeholder="Search by kid's name"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        onPressEnter={handleSearch}
                         prefix={<SearchOutlined />}
                         className="w-full sm:w-64"
                     />
-                    <Button type="primary" onClick={handleSearch}>
-                        Search
-                    </Button>
+                    <Button type="primary">Search</Button>
                 </div>
                 <div className="mb-4 flex justify-end">
                     <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateModalVisible(true)}>
@@ -71,7 +60,7 @@ export const ManagerOrdersPage = () => {
             ) : (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {displayOrders.map((order) => (
-                        <OrderCard key={order.id} order={order} onMarkComplete={handleMarkComplete} />
+                        <OrderCard key={order.id} order={order} />
                     ))}
                 </div>
             )}

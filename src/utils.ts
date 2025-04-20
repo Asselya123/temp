@@ -7,7 +7,10 @@ export const getTimeDifferenceInMinutes = (target: Date): number => {
 };
 
 export const formatTimeDifference = (minutes: number): string => {
-    const absMinutes = Math.abs(minutes);
+    // Adjust for +5 timezone difference
+    const adjustedMinutes = minutes + 5 * 60; // Add 5 hours in minutes
+
+    const absMinutes = Math.abs(adjustedMinutes);
     const hours = Math.floor(absMinutes / 60);
     const remainingMinutes = absMinutes % 60;
 
@@ -19,9 +22,9 @@ export const formatTimeDifference = (minutes: number): string => {
 
     result += `${remainingMinutes}m`;
 
-    if (minutes < 0) {
+    if (adjustedMinutes < 0) {
         return `Late by ${result}`;
-    } else if (minutes > 0) {
+    } else if (adjustedMinutes > 0) {
         return `${result} left`;
     } else {
         return "Time's up";

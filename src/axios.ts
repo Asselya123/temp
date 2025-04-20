@@ -155,3 +155,13 @@ export const getManagerProfile = async () => {
     const response = await axiosAuthorizedApi.get(`/manager`);
     return response.data;
 };
+
+export const hireManager = async (managerId: string) => {
+    const response = await axiosAuthorizedApi.post(`/admin/manager/restore/${managerId}`);
+    return response.data;
+};
+
+export const fireManager = async (managerId: string) => {
+    const response = await axiosAuthorizedApi.post(`/admin/manager/fire/${managerId}`);
+    return response.data;
+};

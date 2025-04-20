@@ -1,5 +1,6 @@
-import { Avatar, Button, Card, Form, Input } from "antd";
+import { Avatar, Button, Card, Form, Input, Popconfirm } from "antd";
 import { useUpdateManagerForm } from "@/forms";
+import { useFireManagerMutation, useHireManagerMutation } from "@/query";
 import { ManagerResponseItem } from "@/types";
 
 interface ManagerCardProps {
@@ -8,6 +9,8 @@ interface ManagerCardProps {
 
 const ManagerCard = ({ manager }: ManagerCardProps) => {
     const { formik } = useUpdateManagerForm(manager);
+    const { mutateAsync: hireManager } = useHireManagerMutation();
+    const { mutateAsync: fireManager } = useFireManagerMutation();
     return (
         <Card title={`Manager #${manager.id}`}>
             <Form layout="vertical" onFinish={formik.handleSubmit}>
@@ -15,19 +18,8 @@ const ManagerCard = ({ manager }: ManagerCardProps) => {
                     <Avatar src={manager.photo_url} size={150} />
                     <div className="grow">
                         <div className="flex gap-2">
-                            <Form.Item
-                                label="Username"
-                                validateStatus={formik.touched.username && formik.errors.username ? "error" : ""}
-                                help={formik.touched.username && formik.errors.username}
-                                className="w-full"
-                            >
-                                <Input
-                                    name="username"
-                                    value={formik.values.username}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    placeholder="Enter username"
-                                />
+                            <Form.Item label="Username" className="w-full">
+                                <Input name="username" value={manager.username} placeholder="Enter username" />
                             </Form.Item>
 
                             <Form.Item
@@ -38,9 +30,8 @@ const ManagerCard = ({ manager }: ManagerCardProps) => {
                             >
                                 <Input.Password
                                     name="password"
-                                    value={formik.values.password}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
+                                    value={"12345678"}
+                                    disabled
                                     placeholder="Enter password"
                                     style={{ width: "100%" }}
                                 />
@@ -56,13 +47,7 @@ const ManagerCard = ({ manager }: ManagerCardProps) => {
                                 help={formik.touched.full_name && formik.errors.full_name}
                                 className="w-full"
                             >
-                                <Input
-                                    name="full_name"
-                                    value={formik.values.full_name}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    placeholder="Enter full name"
-                                />
+                                <Input name="full_name" value={manager.full_name} placeholder="Enter full name" />
                             </Form.Item>
 
                             <Form.Item
@@ -71,13 +56,7 @@ const ManagerCard = ({ manager }: ManagerCardProps) => {
                                 help={formik.touched.phone && formik.errors.phone}
                                 className="w-full"
                             >
-                                <Input
-                                    name="phone"
-                                    value={formik.values.phone}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    placeholder="Enter phone number"
-                                />
+                                <Input name="phone" value={manager.phone} placeholder="Enter phone number" />
                             </Form.Item>
                         </div>
                     </div>
@@ -91,7 +70,7 @@ const ManagerCard = ({ manager }: ManagerCardProps) => {
                     >
                         <Input
                             name="hired_date"
-                            value={formik.values.hired_date}
+                            value={manager.hired_date}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             placeholder="Enter hired date"
@@ -105,15 +84,35 @@ const ManagerCard = ({ manager }: ManagerCardProps) => {
                     >
                         <Input
                             name="fired_date"
-                            value={formik.values.fired_date}
+                            value={manager.fired_date || "-"}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             placeholder="Enter fired date"
                         />
                     </Form.Item>
-                    <Button danger type="primary" htmlType="submit" size="large">
-                        Save
-                    </Button>
+                    {manager.status === "active" ? (
+                        <Popconfirm
+                            title="Are you sure you want to fire this manager?"
+                            onConfirm={async () => await fireManager(manager.id)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button danger type="primary" htmlType="submit" size="large">
+                                Fire
+                            </Button>
+                        </Popconfirm>
+                    ) : (
+                        <Popconfirm
+                            title="Are you sure you want to hire this manager?"
+                            onConfirm={async () => await hireManager(manager.id)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type="primary" htmlType="submit" size="large">
+                                Hire
+                            </Button>
+                        </Popconfirm>
+                    )}
                 </div>
             </Form>
         </Card>

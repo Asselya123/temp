@@ -1,4 +1,5 @@
 import { Button, Form, Input, Modal } from "antd";
+import { MaskedInput } from "antd-mask-input";
 import Title from "antd/es/typography/Title";
 import logo from "@/assets/logo.png";
 import { useCreateManagerForm } from "@/forms";
@@ -12,10 +13,10 @@ interface CreateManagerFormProps {
 const CreateManagerForm = ({ visible, onClose }: CreateManagerFormProps) => {
     const { formik } = useCreateManagerForm();
     return (
-        <Modal title="Create New Order" open={visible} onCancel={onClose} footer={null} width={600}>
+        <Modal title="Create New Manager" open={visible} onCancel={onClose} footer={null} width={600}>
             <div className="flex w-full flex-col items-center">
                 <img src={logo} alt="MiniLand Logo" className="w-[100px]" />
-                <Title level={4}>Create New Order</Title>
+                <Title level={4}>Create New Manager</Title>
             </div>
             <CustomUpload setLink={(link) => formik.setFieldValue("photo_url", link)} />
             <Form layout="vertical" onFinish={formik.handleSubmit} className="mt-4">
@@ -38,7 +39,8 @@ const CreateManagerForm = ({ visible, onClose }: CreateManagerFormProps) => {
                     validateStatus={formik.touched.phone && formik.errors.phone ? "error" : ""}
                     help={formik.touched.phone && formik.errors.phone}
                 >
-                    <Input
+                    <MaskedInput
+                        mask="+7 (000) 000-00-00"
                         name="phone"
                         value={formik.values.phone}
                         onChange={formik.handleChange}

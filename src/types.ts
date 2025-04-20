@@ -10,6 +10,7 @@ export interface Manager {
 
 export interface ManagerResponseItem extends Manager {
     id: string;
+    status: string;
 }
 
 export interface ManagerResponse {
@@ -30,6 +31,7 @@ export interface OrderResponseItem extends Order {
     status: string;
     order_date: string;
     order_time: string;
+    end_date: string;
 }
 
 export interface OrderResponse {
