@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+    client:
+        build:
+            context: ./
+            args:
+                - VITE_API_URL=http://34.42.116.178:3000
+        ports:
+            - "3456:80"
+        environment:
+            - VITE_API_URL=http://34.42.116.178:3000
