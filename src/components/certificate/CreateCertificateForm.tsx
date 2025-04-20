@@ -1,4 +1,5 @@
 import { Button, Form, Input, Modal, Select } from "antd";
+import MaskedInput from "antd-mask-input";
 import Title from "antd/es/typography/Title";
 import logo from "@/assets/logo.png";
 import { useCreateCertificateForm } from "@/forms";
@@ -38,7 +39,8 @@ const CreateCertificateForm = ({ visible, onClose }: CreateCertificateFormProps)
                     validateStatus={formik.touched.buyer_phone && formik.errors.buyer_phone ? "error" : ""}
                     help={formik.touched.buyer_phone && formik.errors.buyer_phone}
                 >
-                    <Input
+                    <MaskedInput
+                        mask="+7 (000) 000-00-00"
                         name="buyer_phone"
                         value={formik.values.buyer_phone}
                         onChange={formik.handleChange}
@@ -67,12 +69,14 @@ const CreateCertificateForm = ({ visible, onClose }: CreateCertificateFormProps)
                     validateStatus={formik.touched.receiver_phone && formik.errors.receiver_phone ? "error" : ""}
                     help={formik.touched.receiver_phone && formik.errors.receiver_phone}
                 >
-                    <Input
+                    <MaskedInput
+                        mask="+7 (000) 000-00-00"
                         name="receiver_phone"
                         value={formik.values.receiver_phone}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="Enter phone number"
+                        style={{ width: "100%" }}
                     />
                 </Form.Item>
 

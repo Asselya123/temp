@@ -70,12 +70,11 @@ export const UseCertificateForm = ({ visible, onClose, certificate }: UseCertifi
                     help={formik.touched.attrs?.child_age && formik.errors.attrs?.child_age}
                 >
                     <InputNumber
+                        type="number"
                         name="attrs.child_age"
                         value={formik.values.attrs.child_age}
                         onChange={(value) => formik.setFieldValue("attrs.child_age", value)}
                         onBlur={formik.handleBlur}
-                        min={1}
-                        max={12}
                         style={{ width: "100%" }}
                     />
                 </Form.Item>

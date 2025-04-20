@@ -1,4 +1,3 @@
-import { PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Card, Popconfirm, Tag, Typography } from "antd";
 import { useState } from "react";
 import { useDeleteCertificateMutation } from "@/query";
@@ -35,26 +34,21 @@ const CertificateCard = ({ certificate }: CertificateCardProps) => {
                 </Title>
 
                 <div className="flex items-center gap-1">
-                    <UserOutlined />
-                    <Text strong>Buyer:</Text>
+                    <Text strong>Buyer's Full Name:</Text>
                     <Text>{certificate.buyer_full_name}</Text>
                 </div>
-
                 <div className="flex items-center gap-1">
-                    <PhoneOutlined />
-                    <Text strong>Buyer Phone:</Text>
+                    <Text strong>Buyer's Phone:</Text>
                     <Text>{certificate.buyer_phone}</Text>
                 </div>
 
                 <div className="flex items-center gap-1">
-                    <UserOutlined />
-                    <Text strong>Receiver:</Text>
+                    <Text strong>Receiver's Full Name:</Text>
                     <Text>{certificate.receiver_full_name}</Text>
                 </div>
 
                 <div className="flex items-center gap-1">
-                    <PhoneOutlined />
-                    <Text strong>Receiver Phone:</Text>
+                    <Text strong>Receiver's Phone:</Text>
                     <Text>{certificate.receiver_phone}</Text>
                 </div>
 

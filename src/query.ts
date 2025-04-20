@@ -177,7 +177,7 @@ export const useUseCertificateMutation = () => {
             message.success("Certificate used successfully!");
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             queryClient.invalidateQueries({ queryKey: ["certificates"] });
-            navigate("/manager/orders");
+            navigate("/manager");
         },
         onError() {
             message.error("Failed to use certificate");
