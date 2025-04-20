@@ -19,14 +19,14 @@ export const AdminManagersPage = () => {
             ) : managers.length === 0 ? (
                 <Empty description="No managers found" />
             ) : (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="flex flex-col gap-4">
                     {managers.map((manager) => (
                         <ManagerCard key={manager.id} manager={manager} />
                     ))}
                 </div>
             )}
 
-            <div className="mb-4 flex justify-end">
+            <div className="mb-14 mt-4 flex justify-end">
                 <Button type="primary" icon={<PlusOutlined />} onClick={() => setCreateModalVisible(true)}>
                     Create Manager
                 </Button>

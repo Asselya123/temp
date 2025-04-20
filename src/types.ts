@@ -4,6 +4,8 @@ export interface Manager {
     phone: string;
     full_name: string;
     photo_url: string;
+    hired_date: string;
+    fired_date: string | null;
 }
 
 export interface ManagerResponseItem extends Manager {
