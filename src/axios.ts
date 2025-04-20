@@ -88,7 +88,18 @@ export const createManager = async (manager: Manager) => {
     return response.data;
 };
 
-export const getStatistics = async (): Promise<StatisticsResponse> => {
-    const response = await axiosAuthorizedApi.get<StatisticsResponse>("/admin");
+export const getStatistics = async ({ startDate, endDate }: { startDate?: string; endDate?: string }): Promise<StatisticsResponse> => {
+    let url = `/admin`;
+    const params = new URLSearchParams();
+    if (startDate) {
+        params.append("from", startDate);
+    }
+    if (endDate) {
+        params.append("to", endDate);
+    }
+    if (params.toString()) {
+        url += `?${params.toString()}`;
+    }
+    const response = await axiosAuthorizedApi.get<StatisticsResponse>(url);
     return response.data;
 };

@@ -2,13 +2,14 @@ import { DollarCircleOutlined, ShoppingOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Card, DatePicker, Statistic } from "antd";
 import Table, { ColumnType } from "antd/es/table";
+import { useState } from "react";
 import { getStatistics } from "@/axios";
 import { Statistics } from "@/types";
 
-const useGetStatistics = () => {
+const useGetStatistics = ({ startDate, endDate }: { startDate?: string; endDate?: string }) => {
     return useQuery({
-        queryKey: ["statistics"],
-        queryFn: getStatistics,
+        queryKey: ["statistics", startDate, endDate],
+        queryFn: () => getStatistics({ startDate, endDate }),
     });
 };
 
@@ -35,11 +36,14 @@ const columns: ColumnType<Statistics>[] = [
     },
 ];
 export const AdminStatisticsPage = () => {
-    const { data, isLoading } = useGetStatistics();
+    const [startDate, setStartDate] = useState<string>();
+    const [endDate, setEndDate] = useState<string>();
+
+    const { data, isLoading } = useGetStatistics({ startDate, endDate });
     return (
         <div>
-            <div className="flex gap-4">
-                <Card type="inner">
+            <div className="flex items-center justify-center gap-4">
+                <Card type="inner" className="w-1/2">
                     <Statistic
                         title="Total Earnings"
                         value={data?.data.reduce((acc, curr) => acc + curr.statistics.total_earnings, 0)}
@@ -48,7 +52,7 @@ export const AdminStatisticsPage = () => {
                         suffix="₸"
                     />
                 </Card>
-                <Card type="inner">
+                <Card type="inner" className="w-1/2">
                     <Statistic
                         title="Total Orders"
                         valueStyle={{ color: "#1890ff" }}
@@ -57,10 +61,16 @@ export const AdminStatisticsPage = () => {
                     />
                 </Card>
             </div>
-            <div>
-                <DatePicker.RangePicker />
+            <div className="mb-8 mt-4 flex items-center justify-center gap-4">
+                <DatePicker.RangePicker
+                    size="large"
+                    onChange={(dates) => {
+                        setStartDate(dates?.[0].toISOString());
+                        setEndDate(dates?.[1].toISOString());
+                    }}
+                />
             </div>
-            <Table columns={columns} dataSource={data?.data} loading={isLoading} rowKey="id" />
+            <Table columns={columns} dataSource={data?.data} loading={isLoading} rowKey={(record) => record.manager.id} />
         </div>
     );
 };
