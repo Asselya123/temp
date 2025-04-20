@@ -24,8 +24,7 @@ const CertificateCard = ({ certificate, onUse }: CertificateCardProps) => {
         >
             <div className="flex flex-col gap-2">
                 <Title level={4} className="m-0">
-                    Certificate
-                    {certificate.id}
+                    Certificate {certificate.id}
                 </Title>
 
                 <div className="flex items-center gap-1">

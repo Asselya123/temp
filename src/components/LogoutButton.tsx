@@ -1,7 +1,11 @@
 import { Button, Popconfirm } from "antd";
 import { useNavigate } from "react-router-dom";
 
-export const LogoutButton = () => {
+interface LogoutButtonProps {
+    size?: "middle" | "small" | "large";
+}
+
+export const LogoutButton = ({ size = "middle" }: LogoutButtonProps) => {
     const navigate = useNavigate();
 
     return (
@@ -12,7 +16,7 @@ export const LogoutButton = () => {
                 navigate("/");
             }}
         >
-            <Button size="middle" type="primary" danger>
+            <Button size={size} type="primary" danger>
                 Logout
             </Button>
         </Popconfirm>

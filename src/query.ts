@@ -13,6 +13,7 @@ import {
     getAdminOrders,
     getAdminPromotions,
     getCertificates,
+    getManagerProfile,
     getManagers,
     getOrders,
     getPromotions,
@@ -256,6 +257,16 @@ export const useCreateManagerMutation = () => {
         },
         onError() {
             message.error("Failed to create manager");
+        },
+    });
+};
+
+export const useGetManagerProfile = () => {
+    return useQuery<ManagerResponseItem>({
+        queryKey: ["managerProfile"],
+        queryFn: async () => {
+            const { data } = await getManagerProfile();
+            return data;
         },
     });
 };

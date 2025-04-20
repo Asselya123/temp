@@ -1,5 +1,5 @@
 import { ClockCircleOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Card, Tag, Typography } from "antd";
+import { Card, Tag, Typography } from "antd";
 import { OrderResponseItem } from "@/types";
 import { formatTimeDifference, getTimeDifferenceInMinutes } from "@/utils";
 
@@ -33,22 +33,14 @@ const OrderCard = ({ order, onMarkComplete }: OrderCardProps) => {
     }
 
     return (
-        <Card
-            className={`w-full border-2 ${borderColorClass} transition-shadow hover:shadow-md`}
-            actions={
-                order.status === "active"
-                    ? [
-                          <Button type="primary" onClick={() => onMarkComplete?.(order.id.toString())}>
-                              Mark as completed
-                          </Button>,
-                      ]
-                    : undefined
-            }
-        >
+        <Card className={`w-full border-2 ${borderColorClass} transition-shadow hover:shadow-md`}>
             <div className="flex flex-col gap-2">
-                <Title level={4} className="m-0">
-                    {order.child_full_name}
-                </Title>
+                <div className="flex items-center justify-between gap-2">
+                    <Title level={4} className="!mb-0 !mt-0">
+                        {order.child_full_name}
+                    </Title>
+                    <Tag color="blue"> {order.status}</Tag>
+                </div>
 
                 <div className="flex items-center gap-1">
                     <ClockCircleOutlined />

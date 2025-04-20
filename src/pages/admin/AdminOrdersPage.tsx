@@ -1,6 +1,6 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, DatePicker, Empty, Input, Spin, Tabs } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AdminOrderCard } from "@/components/order/AdminOrderCard";
 import { useGetAdminOrders } from "@/query";
 
@@ -11,10 +11,6 @@ export const AdminOrdersPage = () => {
     const [endDate, setEndDate] = useState<string | null>(null);
 
     const { data: orders = [], isPending } = useGetAdminOrders({ startDate, endDate, status: activeTab });
-
-    useEffect(() => {
-        console.log(startDate, endDate);
-    }, [startDate, endDate]);
 
     const handleTabChange = (key: string) => {
         setActiveTab(key as "active" | "finished");

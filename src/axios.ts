@@ -145,3 +145,8 @@ export const getStatistics = async ({ startDate, endDate }: { startDate?: string
     const response = await axiosAuthorizedApi.get<StatisticsResponse>(url);
     return response.data;
 };
+
+export const getManagerProfile = async () => {
+    const response = await axiosAuthorizedApi.get(`/manager`);
+    return response.data;
+};
