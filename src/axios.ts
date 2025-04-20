@@ -83,6 +83,16 @@ export const getPromotions = async (): Promise<PromotionResponseItem[]> => {
     return response.data.data;
 };
 
+export const getAdminPromotions = async (): Promise<PromotionResponseItem[]> => {
+    const response = await axiosAuthorizedApi.get<PromotionResponse>("/admin/promotions");
+    return response.data.data;
+};
+
+export const deletePromotion = async (promotionId: string) => {
+    const response = await axiosAuthorizedApi.post(`/admin/promotion/delete/${promotionId}`);
+    return response.data;
+};
+
 export const getManagers = async (): Promise<ManagerResponse> => {
     const response = await axiosAuthorizedApi.get("/admin/managers");
     return response.data;

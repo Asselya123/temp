@@ -7,8 +7,10 @@ import {
     createManager,
     createOrder,
     createPromotion,
+    deletePromotion,
     finishOrder,
     getAdminCertificates,
+    getAdminPromotions,
     getCertificates,
     getManagers,
     getOrders,
@@ -170,6 +172,31 @@ export const useGetPromotions = () => {
     });
 };
 
+export const useGetAdminPromotions = () => {
+    return useQuery<PromotionResponseItem[]>({
+        queryKey: ["adminPromotions"],
+        queryFn: async () => {
+            const data = await getAdminPromotions();
+            return data;
+        },
+    });
+};
+
+export const useDeletePromotionMutation = () => {
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, string>({
+        async mutationFn(promotionId) {
+            return await deletePromotion(promotionId);
+        },
+        onSuccess() {
+            message.success("Promotion deleted successfully!");
+            queryClient.invalidateQueries({ queryKey: ["promotions"] });
+            queryClient.invalidateQueries({ queryKey: ["adminPromotions"] });
+        },
+    });
+};
+
 export const useCreatePromotionMutation = () => {
     const { message } = App.useApp();
     const queryClient = useQueryClient();
@@ -180,6 +207,7 @@ export const useCreatePromotionMutation = () => {
         onSuccess() {
             message.success("Promotion created successfully!");
             queryClient.invalidateQueries({ queryKey: ["promotions"] });
+            queryClient.invalidateQueries({ queryKey: ["adminPromotions"] });
         },
         onError() {
             message.error("Failed to create promotion");
