@@ -8,7 +8,6 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { AdminCertificatesPage } from "./pages/admin/AdminCertificatesPage";
 import { AdminManagersPage } from "./pages/admin/AdminManagersPage";
 import { AdminOrdersPage } from "./pages/admin/AdminOrdersPage";
-import { AdminProfilePage } from "./pages/admin/AdminProfilePage";
 import { AdminPromotionsPage } from "./pages/admin/AdminPromotionsPage";
 import { AdminStatisticsPage } from "./pages/admin/AdminStatisticsPage";
 import { ManagerCertificatesPage } from "./pages/manager/ManagerCertificatesPage";
@@ -52,7 +51,6 @@ function App() {
                                     <Route path="certificates" element={<AdminCertificatesPage />} />
                                     <Route path="orders" element={<AdminOrdersPage />} />
                                     <Route path="promotions" element={<AdminPromotionsPage />} />
-                                    <Route path="profile" element={<AdminProfilePage />} />
                                     <Route path="*" element={<NotFoundPage redirectTo="/admin" />} />
                                 </Route>
                             </Route>

@@ -48,6 +48,33 @@ export const getOrders = async (): Promise<OrderResponseItem[]> => {
     return response.data.data;
 };
 
+export const getAdminOrders = async ({
+    startDate,
+    endDate,
+    status,
+}: {
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+}): Promise<OrderResponseItem[]> => {
+    let url = "/admin/orders";
+    const params = new URLSearchParams();
+    if (startDate) {
+        params.append("from", startDate);
+    }
+    if (endDate) {
+        params.append("to", endDate);
+    }
+    if (status) {
+        params.append("status", status);
+    }
+    if (params.toString()) {
+        url += `?${params.toString()}`;
+    }
+    const response = await axiosAuthorizedApi.get<OrderResponse>(url);
+    return response.data.data;
+};
+
 export const finishOrder = async (orderId: string) => {
     const response = await axiosAuthorizedApi.post(`/manager/order/finish/${orderId}`);
     return response.data;

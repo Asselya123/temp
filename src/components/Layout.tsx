@@ -4,6 +4,7 @@ import { FC } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { LogoutButton } from "./LogoutButton";
 
 const MANAGER_MENU_ITEMS: ItemType<MenuItemType>[] = [
     {
@@ -43,8 +44,8 @@ const ADMIN_MENU_ITEMS = [
         label: <Link to="/admin/promotions">Promotions</Link>,
     },
     {
-        key: "/admin/profile",
-        label: <Link to="/admin/profile">Profile</Link>,
+        key: "/admin/logout",
+        label: <LogoutButton />,
     },
 ];
 

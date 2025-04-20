@@ -10,11 +10,13 @@ import {
     deletePromotion,
     finishOrder,
     getAdminCertificates,
+    getAdminOrders,
     getAdminPromotions,
     getCertificates,
     getManagers,
     getOrders,
     getPromotions,
+    getStatistics,
     login,
     useCertificate,
 } from "./axios";
@@ -43,6 +45,22 @@ export const useGetOrders = () => {
     });
 };
 
+export const useGetStatistics = ({ startDate, endDate }: { startDate?: string; endDate?: string }) => {
+    return useQuery({
+        queryKey: ["statistics", startDate, endDate],
+        queryFn: () => getStatistics({ startDate, endDate }),
+    });
+};
+
+export const useGetAdminOrders = ({ startDate, endDate, status }: { startDate?: string; endDate?: string; status?: string }) => {
+    return useQuery<OrderResponseItem[]>({
+        queryKey: ["adminOrders", startDate, endDate, status],
+        queryFn: async () => {
+            const data = await getAdminOrders({ startDate, endDate, status });
+            return data;
+        },
+    });
+};
 export const useGetCertificates = () => {
     return useQuery<CertificateResponseItem[]>({
         queryKey: ["certificates"],

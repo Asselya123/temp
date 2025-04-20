@@ -1,17 +1,9 @@
 import { DollarCircleOutlined, ShoppingOutlined } from "@ant-design/icons";
-import { useQuery } from "@tanstack/react-query";
 import { Card, DatePicker, Statistic } from "antd";
 import Table, { ColumnType } from "antd/es/table";
 import { useState } from "react";
-import { getStatistics } from "@/axios";
+import { useGetStatistics } from "@/query";
 import { Statistics } from "@/types";
-
-const useGetStatistics = ({ startDate, endDate }: { startDate?: string; endDate?: string }) => {
-    return useQuery({
-        queryKey: ["statistics", startDate, endDate],
-        queryFn: () => getStatistics({ startDate, endDate }),
-    });
-};
 
 const columns: ColumnType<Statistics>[] = [
     {
