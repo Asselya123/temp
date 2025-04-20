@@ -1,8 +1,6 @@
 {
-  "tabWidth": 2,
-  "plugins": [
-    "@trivago/prettier-plugin-sort-imports",
-    "prettier-plugin-tailwindcss"
-  ],
-  "importOrder": ["^@/(.*)$", "^[./]"]
+    "tabWidth": 4,
+    "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+    "printWidth": 140,
+    "importOrder": ["^@/(.*)$", "^[./]"]
 }

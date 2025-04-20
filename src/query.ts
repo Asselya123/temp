@@ -1,198 +1,204 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { App } from "antd";
 import { AxiosError } from "axios";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import {
-  createCertificate,
-  createManager,
-  createOrder,
-  createPromotion,
-  finishOrder,
-  getCertificates,
-  getManagers,
-  getOrders,
-  getPromotions,
-  login,
-  useCertificate,
+    createCertificate,
+    createManager,
+    createOrder,
+    createPromotion,
+    finishOrder,
+    getCertificates,
+    getManagers,
+    getOrders,
+    getPromotions,
+    login,
+    useCertificate,
 } from "./axios";
 import {
-  Certificate,
-  CertificateResponse,
-  LoginRequest,
-  LoginResponse,
-  Manager,
-  ManagerResponse,
-  Order,
-  OrderResponse,
-  Promotion,
-  PromotionResponse,
-  UseCertificateRequest,
+    Certificate,
+    CertificateResponseItem,
+    LoginRequest,
+    LoginResponse,
+    Manager,
+    ManagerResponseItem,
+    Order,
+    OrderResponseItem,
+    Promotion,
+    PromotionResponseItem,
+    UseCertificateRequest,
 } from "./types";
+import { safeDecodeJwt } from "./utils";
 
-// Query hooks
 export const useGetOrders = () => {
-  return useQuery<OrderResponse[]>({
-    queryKey: ["orders"],
-    queryFn: async () => {
-      const data = await getOrders();
-      return data;
-    },
-  });
+    return useQuery<OrderResponseItem[]>({
+        queryKey: ["orders"],
+        queryFn: async () => {
+            const data = await getOrders();
+            return data;
+        },
+    });
 };
 
 export const useGetCertificates = () => {
-  return useQuery<CertificateResponse[]>({
-    queryKey: ["certificates"],
-    queryFn: async () => {
-      const data = await getCertificates();
-      return data;
-    },
-  });
+    return useQuery<CertificateResponseItem[]>({
+        queryKey: ["certificates"],
+        queryFn: async () => {
+            const data = await getCertificates();
+            return data;
+        },
+    });
 };
 
-// Mutation hooks
 export const useLoginMutation = () => {
-  const { message } = App.useApp();
-  const navigate = useNavigate();
-  return useMutation<LoginResponse, AxiosError, LoginRequest>({
-    async mutationFn(credentials) {
-      return await login(credentials);
-    },
-    onSuccess(data) {
-      localStorage.setItem("token", data.token);
-      const role = jwtDecode<{ role: string }>(data.token).role;
-      if (role === "manager") {
-        navigate("/manager");
-      } else {
-        navigate("/admin");
-      }
-      message.success("Login successful!");
-    },
-    onError() {
-      message.error("Login failed");
-    },
-  });
+    const { message } = App.useApp();
+    const navigate = useNavigate();
+    return useMutation<LoginResponse, AxiosError, LoginRequest>({
+        async mutationFn(credentials) {
+            return await login(credentials);
+        },
+        onSuccess({ data }) {
+            localStorage.setItem("token", data.token);
+
+            const role = safeDecodeJwt<{ role: string }>(data.token)?.role;
+
+            if (role === "manager") {
+                navigate("/manager");
+            } else if (role === "admin") {
+                navigate("/admin");
+            } else {
+                message.error("Invalid role");
+                localStorage.removeItem("token");
+                navigate("/");
+                return;
+            }
+
+            message.success("Login successful!");
+        },
+        onError() {
+            message.error("Login failed");
+        },
+    });
 };
 
 export const useCreateOrderMutation = () => {
-  const { message } = App.useApp();
-  const queryClient = useQueryClient();
-  return useMutation<any, AxiosError, Order>({
-    async mutationFn(order) {
-      return await createOrder(order);
-    },
-    onSuccess() {
-      message.success("Order created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
-    onError() {
-      message.error("Failed to create order");
-    },
-  });
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, Order>({
+        async mutationFn(order) {
+            return await createOrder(order);
+        },
+        onSuccess() {
+            message.success("Order created successfully!");
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+        },
+        onError() {
+            message.error("Failed to create order");
+        },
+    });
 };
 
 export const useFinishOrderMutation = () => {
-  const { message } = App.useApp();
-  const queryClient = useQueryClient();
-  return useMutation<any, AxiosError, string>({
-    async mutationFn(orderId) {
-      return await finishOrder(orderId);
-    },
-    onSuccess() {
-      message.success("Order finished successfully!");
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-    },
-    onError() {
-      message.error("Failed to finish order");
-    },
-  });
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, string>({
+        async mutationFn(orderId) {
+            return await finishOrder(orderId);
+        },
+        onSuccess() {
+            message.success("Order finished successfully!");
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+        },
+        onError() {
+            message.error("Failed to finish order");
+        },
+    });
 };
 
 export const useCreateCertificateMutation = () => {
-  const { message } = App.useApp();
-  const queryClient = useQueryClient();
-  return useMutation<any, AxiosError, Certificate>({
-    async mutationFn(certificate) {
-      return await createCertificate(certificate);
-    },
-    onSuccess() {
-      message.success("Certificate created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["certificates"] });
-    },
-    onError() {
-      message.error("Failed to create certificate");
-    },
-  });
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, Certificate>({
+        async mutationFn(certificate) {
+            return await createCertificate(certificate);
+        },
+        onSuccess() {
+            message.success("Certificate created successfully!");
+            queryClient.invalidateQueries({ queryKey: ["certificates"] });
+        },
+        onError() {
+            message.error("Failed to create certificate");
+        },
+    });
 };
 
 export const useUseCertificateMutation = () => {
-  const { message } = App.useApp();
-  const queryClient = useQueryClient();
-  return useMutation<any, AxiosError, UseCertificateRequest>({
-    async mutationFn(data) {
-      return await useCertificate(data);
-    },
-    onSuccess() {
-      message.success("Certificate used successfully!");
-      queryClient.invalidateQueries({ queryKey: ["certificates"] });
-    },
-    onError() {
-      message.error("Failed to use certificate");
-    },
-  });
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, UseCertificateRequest>({
+        async mutationFn(data) {
+            return await useCertificate(data);
+        },
+        onSuccess() {
+            message.success("Certificate used successfully!");
+            queryClient.invalidateQueries({ queryKey: ["certificates"] });
+        },
+        onError() {
+            message.error("Failed to use certificate");
+        },
+    });
 };
 
 export const useGetPromotions = () => {
-  return useQuery<PromotionResponse[]>({
-    queryKey: ["promotions"],
-    queryFn: async () => {
-      const data = await getPromotions();
-      return data;
-    },
-  });
+    return useQuery<PromotionResponseItem[]>({
+        queryKey: ["promotions"],
+        queryFn: async () => {
+            const data = await getPromotions();
+            return data;
+        },
+    });
 };
 
 export const useCreatePromotionMutation = () => {
-  const { message } = App.useApp();
-  const queryClient = useQueryClient();
-  return useMutation<any, AxiosError, Promotion>({
-    async mutationFn(promotion) {
-      return await createPromotion(promotion);
-    },
-    onSuccess() {
-      message.success("Promotion created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["promotions"] });
-    },
-    onError() {
-      message.error("Failed to create promotion");
-    },
-  });
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, Promotion>({
+        async mutationFn(promotion) {
+            return await createPromotion(promotion);
+        },
+        onSuccess() {
+            message.success("Promotion created successfully!");
+            queryClient.invalidateQueries({ queryKey: ["promotions"] });
+        },
+        onError() {
+            message.error("Failed to create promotion");
+        },
+    });
 };
 
 export const useGetManagers = () => {
-  return useQuery<ManagerResponse[]>({
-    queryKey: ["managers"],
-    queryFn: async () => {
-      const data = await getManagers();
-      return data;
-    },
-  });
+    return useQuery<ManagerResponseItem[]>({
+        queryKey: ["managers"],
+        queryFn: async () => {
+            const { data } = await getManagers();
+            return data;
+        },
+    });
 };
 
 export const useCreateManagerMutation = () => {
-  const { message } = App.useApp();
-  const queryClient = useQueryClient();
-  return useMutation<any, AxiosError, Manager>({
-    async mutationFn(manager) {
-      return await createManager(manager);
-    },
-    onSuccess() {
-      message.success("Manager created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["managers"] });
-    },
-    onError() {
-      message.error("Failed to create manager");
-    },
-  });
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, Manager>({
+        async mutationFn(manager) {
+            return await createManager(manager);
+        },
+        onSuccess() {
+            message.success("Manager created successfully!");
+            queryClient.invalidateQueries({ queryKey: ["managers"] });
+        },
+        onError() {
+            message.error("Failed to create manager");
+        },
+    });
 };
