@@ -1,60 +1,63 @@
 import { Button, Form, Input, InputNumber, Modal, Select } from "antd";
 import Title from "antd/es/typography/Title";
 import logo from "@/assets/logo.png";
-import { useCreateOrderForm } from "@/forms";
+import { useUseCertificateForm } from "@/forms";
 import { useGetPromotions } from "@/query";
+import { CertificateResponseItem } from "@/types";
 
-interface CreateOrderFormProps {
+interface UseCertificateFormProps {
     visible: boolean;
     onClose: () => void;
+    certificate: CertificateResponseItem;
 }
 
-const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
-    const { formik } = useCreateOrderForm();
+export const UseCertificateForm = ({ visible, onClose, certificate }: UseCertificateFormProps) => {
+    const { formik } = useUseCertificateForm({
+        certificate_id: Number(certificate.id),
+        attrs: {
+            order_type: "use",
+            promotion_name: certificate.promotion_name,
+            child_full_name: "",
+            child_age: 0,
+            parent_full_name: certificate.receiver_full_name,
+            parent_phone: certificate.receiver_phone,
+        },
+    });
     const { data: promotions } = useGetPromotions();
     return (
-        <Modal title="Create New Order" open={visible} onCancel={onClose} footer={null} width={600}>
+        <Modal open={visible} onCancel={onClose} footer={null} width={600}>
             <div className="flex w-full flex-col items-center">
                 <img src={logo} alt="MiniLand Logo" className="w-[100px]" />
-                <Title level={4}>Create New Order</Title>
+                <Title level={4}>Use Certificate</Title>
             </div>
             <Form layout="vertical" onFinish={formik.handleSubmit}>
-                <Form.Item
-                    label="Parent's Full Name"
-                    validateStatus={formik.touched.parent_full_name && formik.errors.parent_full_name ? "error" : ""}
-                    help={formik.touched.parent_full_name && formik.errors.parent_full_name}
-                >
+                <Form.Item label="Parent's Full Name">
                     <Input
-                        name="parent_full_name"
-                        value={formik.values.parent_full_name}
-                        onChange={formik.handleChange}
+                        name="attrs.parent_full_name"
+                        value={formik.values.attrs.parent_full_name}
                         onBlur={formik.handleBlur}
                         placeholder="Enter full name"
+                        disabled
                     />
                 </Form.Item>
 
-                <Form.Item
-                    label="Parent's Phone Number"
-                    validateStatus={formik.touched.parent_phone && formik.errors.parent_phone ? "error" : ""}
-                    help={formik.touched.parent_phone && formik.errors.parent_phone}
-                >
+                <Form.Item label="Parent's Phone Number">
                     <Input
-                        name="parent_phone"
-                        value={formik.values.parent_phone}
-                        onChange={formik.handleChange}
+                        name="attrs.parent_phone"
+                        value={formik.values.attrs.parent_phone}
                         onBlur={formik.handleBlur}
                         placeholder="Enter phone number"
+                        disabled
                     />
                 </Form.Item>
-
                 <Form.Item
                     label="Kid's Full Name"
-                    validateStatus={formik.touched.child_full_name && formik.errors.child_full_name ? "error" : ""}
-                    help={formik.touched.child_full_name && formik.errors.child_full_name}
+                    validateStatus={formik.touched.attrs?.child_full_name && formik.errors.attrs?.child_full_name ? "error" : ""}
+                    help={formik.touched.attrs?.child_full_name && formik.errors.attrs?.child_full_name}
                 >
                     <Input
-                        name="child_full_name"
-                        value={formik.values.child_full_name}
+                        name="attrs.child_full_name"
+                        value={formik.values.attrs.child_full_name}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         placeholder="Enter full name"
@@ -63,13 +66,13 @@ const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
 
                 <Form.Item
                     label="Kid's Age"
-                    validateStatus={formik.touched.child_age && formik.errors.child_age ? "error" : ""}
-                    help={formik.touched.child_age && formik.errors.child_age}
+                    validateStatus={formik.touched.attrs?.child_age && formik.errors.attrs?.child_age ? "error" : ""}
+                    help={formik.touched.attrs?.child_age && formik.errors.attrs?.child_age}
                 >
                     <InputNumber
-                        name="child_age"
-                        value={formik.values.child_age}
-                        onChange={(value) => formik.setFieldValue("child_age", value)}
+                        name="attrs.child_age"
+                        value={formik.values.attrs.child_age}
+                        onChange={(value) => formik.setFieldValue("attrs.child_age", value)}
                         onBlur={formik.handleBlur}
                         min={1}
                         max={12}
@@ -79,18 +82,18 @@ const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
 
                 <Form.Item
                     label="Select Plan"
-                    validateStatus={formik.touched.promotion_name && formik.errors.promotion_name ? "error" : ""}
-                    help={formik.touched.promotion_name && formik.errors.promotion_name}
+                    validateStatus={formik.touched.attrs?.promotion_name && formik.errors.attrs?.promotion_name ? "error" : ""}
+                    help={formik.touched.attrs?.promotion_name && formik.errors.attrs?.promotion_name}
                 >
                     <Select
-                        value={formik.values.promotion_name}
-                        onChange={(value) => formik.setFieldValue("promotion_name", value)}
+                        value={formik.values.attrs.promotion_name}
                         onBlur={formik.handleBlur}
                         placeholder="Select a plan"
                         options={promotions?.map((promotion) => ({
                             value: promotion.name,
                             label: `${promotion.name} - $${promotion.cost}`,
                         }))}
+                        disabled
                     />
                 </Form.Item>
 
@@ -114,5 +117,3 @@ const CreateOrderForm = ({ visible, onClose }: CreateOrderFormProps) => {
         </Modal>
     );
 };
-
-export default CreateOrderForm;

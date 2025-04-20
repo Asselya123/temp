@@ -116,6 +116,8 @@ export const useCreateCertificateForm = () => {
             receiver_full_name: "",
             receiver_phone: "",
             promotion_name: "",
+            valid_until: "",
+            cost: 0,
         },
         validationSchema: certificateSchema,
         validateOnChange: true,
@@ -129,19 +131,19 @@ export const useCreateCertificateForm = () => {
     return { formik, mutation };
 };
 
-export const useUseCertificateForm = () => {
+export const useUseCertificateForm = (initialValues: UseCertificateRequest) => {
     const mutation = useUseCertificateMutation();
 
     const formik = useFormik<UseCertificateRequest>({
         initialValues: {
-            certificate_id: 0,
+            certificate_id: initialValues.certificate_id,
             attrs: {
-                order_type: "",
-                promotion_name: "",
-                child_full_name: "",
-                child_age: 0,
-                parent_full_name: "",
-                parent_phone: "",
+                order_type: initialValues.attrs.order_type,
+                promotion_name: initialValues.attrs.promotion_name,
+                child_full_name: initialValues.attrs.child_full_name,
+                child_age: initialValues.attrs.child_age,
+                parent_full_name: initialValues.attrs.parent_full_name,
+                parent_phone: initialValues.attrs.parent_phone,
             },
         },
         validationSchema: useCertificateSchema,

@@ -85,11 +85,6 @@ export const createCertificate = async (certificate: Certificate) => {
     return response.data;
 };
 
-export const useCertificate = async (data: UseCertificateRequest) => {
-    const response = await axiosAuthorizedApi.post(`/manager/certificate/use`, data);
-    return response.data;
-};
-
 export const getCertificates = async (): Promise<CertificateResponseItem[]> => {
     const response = await axiosAuthorizedApi.get<CertificateResponse>("/manager/certificates");
     return response.data.data;
@@ -117,6 +112,16 @@ export const getAdminPromotions = async (): Promise<PromotionResponseItem[]> => 
 
 export const deletePromotion = async (promotionId: string) => {
     const response = await axiosAuthorizedApi.post(`/admin/promotion/delete/${promotionId}`);
+    return response.data;
+};
+
+export const deleteCertificate = async (certificateId: string) => {
+    const response = await axiosAuthorizedApi.post(`/manager/certificate/delete/${certificateId}`);
+    return response.data;
+};
+
+export const useCertificate = async (data: UseCertificateRequest) => {
+    const response = await axiosAuthorizedApi.post(`/manager/certificate/use`, data);
     return response.data;
 };
 

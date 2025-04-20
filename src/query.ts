@@ -7,6 +7,7 @@ import {
     createManager,
     createOrder,
     createPromotion,
+    deleteCertificate,
     deletePromotion,
     finishOrder,
     getAdminCertificates,
@@ -167,13 +168,16 @@ export const useCreateCertificateMutation = () => {
 export const useUseCertificateMutation = () => {
     const { message } = App.useApp();
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
     return useMutation<any, AxiosError, UseCertificateRequest>({
         async mutationFn(data) {
             return await useCertificate(data);
         },
         onSuccess() {
             message.success("Certificate used successfully!");
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
             queryClient.invalidateQueries({ queryKey: ["certificates"] });
+            navigate("/manager/orders");
         },
         onError() {
             message.error("Failed to use certificate");
@@ -267,6 +271,23 @@ export const useGetManagerProfile = () => {
         queryFn: async () => {
             const { data } = await getManagerProfile();
             return data;
+        },
+    });
+};
+
+export const useDeleteCertificateMutation = () => {
+    const { message } = App.useApp();
+    const queryClient = useQueryClient();
+    return useMutation<any, AxiosError, string>({
+        async mutationFn(certificateId) {
+            return await deleteCertificate(certificateId);
+        },
+        onSuccess() {
+            message.success("Certificate deleted successfully!");
+            queryClient.invalidateQueries({ queryKey: ["certificates"] });
+        },
+        onError() {
+            message.error("Failed to delete certificate");
         },
     });
 };

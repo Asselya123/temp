@@ -1,5 +1,5 @@
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { Button, Empty, Input, Spin, Tabs } from "antd";
+import { Button, Empty, Input, Spin } from "antd";
 import { useState } from "react";
 import CertificateCard from "@/components/certificate/CertificateCard";
 import CreateCertificateForm from "@/components/certificate/CreateCertificateForm";
@@ -48,18 +48,6 @@ export const ManagerCertificatesPage = () => {
                 </div>
             </div>
 
-            <Tabs
-                activeKey={activeTab}
-                onChange={handleTabChange}
-                className="mb-4"
-                items={[
-                    { label: "All", key: "all" },
-                    { label: "Active", key: "active" },
-                    { label: "Completed", key: "completed" },
-                    { label: "Expired", key: "expired" },
-                ]}
-            />
-
             {isPending ? (
                 <div className="flex justify-center p-10">
                     <Spin size="large" />
@@ -69,7 +57,7 @@ export const ManagerCertificatesPage = () => {
             ) : (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {certificates.map((certificate) => (
-                        <CertificateCard key={certificate.id} certificate={certificate} onUse={handleUse} />
+                        <CertificateCard key={certificate.id} certificate={certificate} />
                     ))}
                 </div>
             )}

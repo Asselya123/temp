@@ -42,6 +42,8 @@ export interface Certificate {
     receiver_full_name: string;
     receiver_phone: string;
     promotion_name: string;
+    valid_until: string;
+    cost: number;
 }
 
 export interface CertificateResponseItem extends Certificate {
