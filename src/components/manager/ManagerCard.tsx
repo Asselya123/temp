@@ -35,9 +35,6 @@ const ManagerCard = ({ manager }: ManagerCardProps) => {
                                     placeholder="Enter password"
                                     style={{ width: "100%" }}
                                 />
-                                <Button type="link" onClick={() => {}} className="self-end">
-                                    Change Password
-                                </Button>
                             </Form.Item>
                         </div>
                         <div className="flex gap-2">

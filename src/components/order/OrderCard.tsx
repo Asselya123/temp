@@ -7,10 +7,10 @@ const { Text, Title } = Typography;
 
 interface OrderCardProps {
     order: OrderResponseItem;
-    onMarkComplete?: (id: string) => void;
+    onClick: () => void;
 }
 
-const OrderCard = ({ order, onMarkComplete }: OrderCardProps) => {
+const OrderCard = ({ order, onClick }: OrderCardProps) => {
     const timeLeft = getTimeDifferenceInMinutes(new Date(order.end_date));
 
     let borderColorClass = "border-gray-200";
@@ -33,7 +33,7 @@ const OrderCard = ({ order, onMarkComplete }: OrderCardProps) => {
     }
 
     return (
-        <Card className={`w-full border-2 ${borderColorClass} transition-shadow hover:shadow-md`}>
+        <Card className={`w-full border-2 ${borderColorClass} cursor-pointer transition-shadow hover:shadow-md`} onClick={onClick}>
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
                     <Title level={4} className="!mb-0 !mt-0">

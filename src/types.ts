@@ -32,6 +32,8 @@ export interface OrderResponseItem extends Order {
     order_date: string;
     order_time: string;
     end_date: string;
+    penalty: number;
+    cost: number;
 }
 
 export interface OrderResponse {

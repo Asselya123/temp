@@ -6,21 +6,30 @@ import { useGetAdminOrders } from "@/query";
 
 export const AdminOrdersPage = () => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [activeTab, setActiveTab] = useState<"active" | "finished">("active");
+    const [activeTab, setActiveTab] = useState<"all" | "active" | "completed" | "expired">("all");
     const [startDate, setStartDate] = useState<string | null>(null);
     const [endDate, setEndDate] = useState<string | null>(null);
 
-    const { data: orders = [], isPending } = useGetAdminOrders({ startDate, endDate, status: activeTab });
+    const { data: orders = [], isPending } = useGetAdminOrders({
+        startDate,
+        endDate,
+        status: activeTab === "all" || activeTab === "expired" ? null : activeTab === "completed" ? "finished" : activeTab,
+    });
 
     const handleTabChange = (key: string) => {
-        setActiveTab(key as "active" | "finished");
-
+        setActiveTab(key as "all" | "active" | "completed" | "expired");
         setSearchTerm("");
     };
 
-    const displayOrders = orders.filter((order) => {
+    let displayOrders = orders.filter((order) => {
         return order.child_full_name.toLowerCase().includes(searchTerm.toLowerCase());
     });
+
+    if (activeTab === "expired") {
+        displayOrders = displayOrders.filter((order) => {
+            return new Date(order.end_date) < new Date();
+        });
+    }
 
     return (
         <div>

@@ -10,7 +10,7 @@ interface OrderCardProps {
 }
 
 export const AdminOrderCard = ({ order }: OrderCardProps) => {
-    const timeLeft = getTimeDifferenceInMinutes(new Date(order.order_date + " " + order.order_time));
+    const timeLeft = getTimeDifferenceInMinutes(new Date(order.end_date));
 
     let borderColorClass = "border-gray-200";
 

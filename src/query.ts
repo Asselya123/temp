@@ -39,11 +39,11 @@ import {
 } from "./types";
 import { safeDecodeJwt } from "./utils";
 
-export const useGetOrders = () => {
+export const useGetOrders = ({ startDate, endDate, status }: { startDate?: string; endDate?: string; status?: string }) => {
     return useQuery<OrderResponseItem[]>({
-        queryKey: ["orders"],
+        queryKey: ["orders", startDate, endDate, status],
         queryFn: async () => {
-            const data = await getOrders();
+            const data = await getOrders({ startDate, endDate, status });
             return data;
         },
     });
@@ -143,6 +143,7 @@ export const useFinishOrderMutation = () => {
         onSuccess() {
             message.success("Order finished successfully!");
             queryClient.invalidateQueries({ queryKey: ["orders"] });
+            queryClient.invalidateQueries({ queryKey: ["adminOrders"] });
         },
         onError() {
             message.error("Failed to finish order");

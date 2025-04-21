@@ -31,7 +31,6 @@ export const CustomUpload: FC<CustomUploadProps> = ({ setLink }) => {
             setLink(resumeLink);
             message.success("Документ успешно загружен");
         } catch (updateError) {
-            console.log("updateError", updateError);
             message.error("Не удалось загрузить документ");
             onError(updateError);
         }

@@ -3,21 +3,31 @@ import { Button, Empty, Input, Spin, Tabs } from "antd";
 import { useState } from "react";
 import CreateOrderForm from "@/components/order/CreateOrderForm";
 import OrderCard from "@/components/order/OrderCard";
+import { OrderDetailsForm } from "@/components/order/OrderDetailsForm";
 import { useGetOrders } from "@/query";
+import { OrderResponseItem } from "@/types";
 
 export const ManagerOrdersPage = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [activeTab, setActiveTab] = useState<string>("all");
     const [createModalVisible, setCreateModalVisible] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState<OrderResponseItem | null>(null);
 
-    const { data: orders = [], isPending } = useGetOrders();
+    const { data: orders = [], isPending } = useGetOrders({
+        status: activeTab === "all" || activeTab === "expired" ? null : activeTab === "completed" ? "finished" : activeTab,
+    });
 
     const handleTabChange = (key: string) => {
         setActiveTab(key);
         setSearchTerm("");
     };
 
-    const displayOrders = orders.filter((order) => order.child_full_name.toLowerCase().includes(searchTerm.toLowerCase()));
+    let displayOrders = orders.filter((order) => order.child_full_name.toLowerCase().includes(searchTerm.toLowerCase()));
+    if (activeTab === "expired") {
+        displayOrders = displayOrders.filter((order) => {
+            return new Date(order.end_date) < new Date();
+        });
+    }
 
     return (
         <div>
@@ -60,12 +70,15 @@ export const ManagerOrdersPage = () => {
             ) : (
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {displayOrders.map((order) => (
-                        <OrderCard key={order.id} order={order} />
+                        <OrderCard key={order.id} order={order} onClick={() => setSelectedOrder(order)} />
                     ))}
                 </div>
             )}
 
             <CreateOrderForm visible={createModalVisible} onClose={() => setCreateModalVisible(false)} />
+            {selectedOrder && (
+                <OrderDetailsForm visible={selectedOrder !== null} onClose={() => setSelectedOrder(null)} order={selectedOrder} />
+            )}
         </div>
     );
 };
