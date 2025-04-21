@@ -27,7 +27,7 @@ export const AdminOrdersPage = () => {
 
     if (activeTab === "expired") {
         displayOrders = displayOrders.filter((order) => {
-            return new Date(order.end_date) < new Date();
+            return new Date(order.end_time) < new Date();
         });
     }
 

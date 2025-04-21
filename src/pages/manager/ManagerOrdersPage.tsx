@@ -25,7 +25,7 @@ export const ManagerOrdersPage = () => {
     let displayOrders = orders.filter((order) => order.child_full_name.toLowerCase().includes(searchTerm.toLowerCase()));
     if (activeTab === "expired") {
         displayOrders = displayOrders.filter((order) => {
-            return new Date(order.end_date) < new Date();
+            return new Date(order.end_time) < new Date();
         });
     }
 

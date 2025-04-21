@@ -31,7 +31,7 @@ export interface OrderResponseItem extends Order {
     status: string;
     order_date: string;
     order_time: string;
-    end_date: string;
+    end_time: string;
     penalty: number;
     cost: number;
 }

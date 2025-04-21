@@ -11,7 +11,7 @@ interface OrderCardProps {
 }
 
 const OrderCard = ({ order, onClick }: OrderCardProps) => {
-    const timeLeft = getTimeDifferenceInMinutes(new Date(order.end_date));
+    const timeLeft = getTimeDifferenceInMinutes(new Date(order.end_time));
 
     let borderColorClass = "border-gray-200";
 

@@ -58,7 +58,7 @@ export const OrderDetailsForm = ({ visible, onClose, order }: OrderDetailsFormPr
                         <b>Time left:</b> {getTimeDifferenceInMinutes(new Date())}
                     </div>
                     <div>
-                        <b>Total Price:</b> {order.penalty * getTimeDifferenceInMinutes(new Date(order.end_date)) + order.cost} ₸
+                        <b>Total Price:</b> {order.penalty * getTimeDifferenceInMinutes(new Date(order.end_time)) + order.cost} ₸
                     </div>
                 </div>
                 {order.status === "active" && (
